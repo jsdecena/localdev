@@ -1,0 +1,25 @@
+{
+  "name": "localdev-isolated",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+  "features": {
+    "ghcr.io/devcontainers/features/node:2": {
+      "version": "lts",
+      "nodeGypDependencies": true,
+      "installYarnUsingApt": false
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "dockerDashComposeVersion": "latest"
+    }
+  },
+  "privileged": true,
+  "containerEnv": {
+    "NVM_DIR": "/usr/local/share/nvm"
+  },
+  "workspaceMount": "source=localdev-workspace,target=/workspace,type=volume",
+  "workspaceFolder": "/workspace",
+  "mounts": [
+    "source=localdev-ssh,target=/home/vscode/.ssh,type=volume"
+  ],
+  "postCreateCommand": "sudo apt-get update && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends openssh-client vim-tiny && sudo rm -rf /var/lib/apt/lists/* && sudo chown -R vscode:vscode /workspace /home/vscode/.ssh && chmod 700 /home/vscode/.ssh && . ${NVM_DIR}/nvm.sh && corepack enable",
+  "remoteUser": "vscode"
+}
